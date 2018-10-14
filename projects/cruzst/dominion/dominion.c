@@ -11,11 +11,11 @@
    and defined at the end of the file */
 
 /* FUNCTION PROTOTYPES */
-int smithyInternal(int currentPlayer, struct gameState *state, int handPos);
-int adventurerInternal(int currentPlayer, struct gameState *state, int drawnTreasures, int zz);
-int council_roomInternal(int currentPlayer, struct gameState *state, int handPos);
-int stewardInternal(int currentPlayer, struct gameState *state, int handPos, int choice1, int choice2, int choice3);
-int villageInternal(int currentPlayer, struct gameState *state, int handPos);
+int smithyInternal(struct gameState *state, int handPos);
+int adventurerInternal(struct gameState *state);
+int council_roomInternal(struct gameState *state, int handPos);
+int stewardInternal(struct gameState *state, int handPos, int choice1, int choice2, int choice3);
+int villageInternal(struct gameState *state, int handPos);
 
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
@@ -679,10 +679,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card )
     {
     case adventurer:
-      adventurerInternal(currentPlayer, state, drawntreasure, z);
+      return adventurerInternal(state);
 
     case council_room:
-      council_roomInternal(currentPlayer, state, handPos);
+      return council_roomInternal(state, handPos);
 
     case feast:
       //gain card with cost up to 5
@@ -802,10 +802,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 
     case smithy:
-      smithyInternal(currentPlayer, state, handPos);
+      return smithyInternal(state, handPos);
 
     case village:
-      villageInternal(currentPlayer, state, handPos);
+      return villageInternal(state, handPos);
 
     case baron:
       state->numBuys++;//Increase buys by 1!
@@ -921,7 +921,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 
     case steward:
-      stewardInternal(currentPlayer, state, handPos, choice1, choice2, choice3);
+      return stewardInternal(state, handPos, choice1, choice2, choice3);
 
     case tribute:
       if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1){
@@ -1269,10 +1269,11 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
 
 /** BEGIN FUNCTION DEFINITIONS FOR ASSIGNMENT 2 ******/
-int smithyInternal(int currentPlayer, struct gameState *state, int handPos){
+int smithyInternal(struct gameState *state, int handPos){
   // +3 Cards
+  int currentPlayer = whoseTurn(state);
   int i;
-  for (i = 1; i < 3; i++){                              /**  BUG: i starts at 1, instead of 0  **/
+  for (i = 0; i < 3; i++){                              /**  BUG: i starts at 1, instead of 0  **/
     drawCard(currentPlayer, state);
   }
 
@@ -1282,11 +1283,13 @@ int smithyInternal(int currentPlayer, struct gameState *state, int handPos){
 }
 
 
-int adventurerInternal(int currentPlayer, struct gameState *state, int drawnTreasures, int zz){
+int adventurerInternal(struct gameState *state){
   int temphand[MAX_HAND];
   int cardDrawn;
-  int drawntreasure = drawnTreasures;
-  int z = zz;
+  int drawntreasure = 0;
+  int z = 0;
+  int currentPlayer = whoseTurn(state);
+
   while(drawntreasure<2){
     if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
@@ -1304,7 +1307,7 @@ int adventurerInternal(int currentPlayer, struct gameState *state, int drawnTrea
     }
   }
 
-  while(z-1>=1){                                        /** BUG: statment changed from (z-1>=0) meaning, discard all but one card **/
+  while(z-1>=0){                                        /** BUG: statment changed from (z-1>=0) meaning, discard all but one card **/
     state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
     z=z-1;
   }
@@ -1312,7 +1315,8 @@ int adventurerInternal(int currentPlayer, struct gameState *state, int drawnTrea
   return 0;
 }
 
-int council_roomInternal(int currentPlayer, struct gameState *state, int handPos){
+int council_roomInternal(struct gameState *state, int handPos){
+  int currentPlayer = whoseTurn(state);
   // +4 cards
   int i;
   for (i = 0; i < 4; i++){
@@ -1321,7 +1325,7 @@ int council_roomInternal(int currentPlayer, struct gameState *state, int handPos
   // +1 buy
   state->numBuys++;
   // ea other player draws a card
-  for (i = 1; i < state->numPlayers; i++){              /** BUG: i starts at 1, instead of 0. Someone does not get to draw. **/
+  for (i = 0; i < state->numPlayers; i++){              /** BUG: i starts at 1, instead of 0. Someone does not get to draw. **/
     if (i != currentPlayer){
       drawCard(i, state);
     }
@@ -1332,7 +1336,8 @@ int council_roomInternal(int currentPlayer, struct gameState *state, int handPos
   return 0;
 }
 
-int stewardInternal(int currentPlayer, struct gameState *state, int handPos, int choice1, int choice2, int choice3){
+int stewardInternal(struct gameState *state, int handPos, int choice1, int choice2, int choice3){
+  int currentPlayer = whoseTurn(state);
   if (choice1 == 1){
 	  //+2 cards
 	  drawCard(currentPlayer, state);                     /** BUG: only draw 1 card instead of 2 **/
@@ -1353,7 +1358,8 @@ int stewardInternal(int currentPlayer, struct gameState *state, int handPos, int
   return 0;
 }
 
-int villageInternal(int currentPlayer, struct gameState *state, int handPos){
+int villageInternal(struct gameState *state, int handPos){
+  int currentPlayer = whoseTurn(state);
   // +1 Card
   drawCard(currentPlayer, state);
 
