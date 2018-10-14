@@ -1273,7 +1273,7 @@ int smithyInternal(struct gameState *state, int handPos){
   // +3 Cards
   int currentPlayer = whoseTurn(state);
   int i;
-  for (i = 0; i < 3; i++){                              /**  BUG: i starts at 1, instead of 0  **/
+  for (i = 1; i < 3; i++){                              /**  BUG: i starts at 1, instead of 0  **/
     drawCard(currentPlayer, state);
   }
 
@@ -1290,7 +1290,7 @@ int adventurerInternal(struct gameState *state){
   int z = 0;
   int currentPlayer = whoseTurn(state);
 
-  while(drawntreasure<2){
+  while(drawntreasure<1){         /** BUG: only 1 treasure is drawn **/
     if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
     }
@@ -1307,7 +1307,7 @@ int adventurerInternal(struct gameState *state){
     }
   }
 
-  while(z-1>=0){                                        /** BUG: statment changed from (z-1>=0) meaning, discard all but one card **/
+  while(z-1>=0){
     state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
     z=z-1;
   }
