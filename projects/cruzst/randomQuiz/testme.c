@@ -23,43 +23,13 @@ char *inputString()
 
   int i;
   for (i = 0; i < 5; i++){
-
-//    int num;
-//    num = ((rand() % (116 - 101 + 1)) + 101);
-//    string[i] = (char)num;
     int num;
     num = ((rand() % 10));
     string[i] = inputPool[num];
-
   }
   string[5] = '\0';
   return string;
 }
-
-
-/*
-char *inputString()
-{
-  char string[5];
-  int i;
-  for (i = 0; i < 5; i++){
-    int flag = 1;
-    int num;
-    while (flag = 1){
-      num = ((rand() % (116 - 101 + 1)) + 101);
-      if (!(num > 102) && !(num < 110))
-        flag = 0;
-    }
-
-    string[i] = (char)num;
-  }
-  string[5] = '\0';
-  char * ret = string;
-  return ret;
-
-}
-*/
-
 
 void testme()
 {
@@ -91,6 +61,7 @@ void testme()
        && s[4] == 't' && s[5] == '\0'
        && state == 9)
     {
+      free(s);
       printf("error ");
       exit(200);
     }
