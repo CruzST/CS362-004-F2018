@@ -1273,12 +1273,12 @@ int smithyInternal(struct gameState *state, int handPos){
   // +3 Cards
   int currentPlayer = whoseTurn(state);
   int i;
-  for (i = 1; i < 3; i++){                              /**  BUG: i starts at 1, instead of 0  **/
+  for (i = 0; i < 3; i++){
     drawCard(currentPlayer, state);
   }
 
   // Discard card from hand
-  discardCard(handPos, currentPlayer, state, 0);
+  //discardCard(handPos, currentPlayer, state, 0);      / ** BUG: don't discard a card **/
   return 0;
 }
 
@@ -1325,7 +1325,7 @@ int council_roomInternal(struct gameState *state, int handPos){
   // +1 buy
   state->numBuys++;
   // ea other player draws a card
-  for (i = 0; i < state->numPlayers; i++){              /** BUG: i starts at 1, instead of 0. Someone does not get to draw. **/
+  for (i = 1; i < state->numPlayers; i++){              /** BUG: i starts at 1, instead of 0. Someone does not get to draw. **/
     if (i != currentPlayer){
       drawCard(i, state);
     }
