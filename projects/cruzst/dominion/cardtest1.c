@@ -37,7 +37,7 @@ int main(){
   initializeGame(2, deck, 888, &GAME);
   initializeGame(2, deck, 888, &testGAME);
   //memcpy(&testGAME, &GAME, sizeof(struct gameState));
-  smithyInternal(&testGAME);
+  smithyInternal(&testGAME, 0);
 
   printf("Testing handcount size\n");
   printf("Expected handCount: %d, smityInternal handCount: %d\n", GAME.handCount[GAME.whoseTurn]+2, testGAME.handCount[GAME.whoseTurn]);

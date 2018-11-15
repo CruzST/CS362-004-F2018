@@ -49,40 +49,65 @@ int adventurerInternal(struct gameState *state){
 
 
 int main(){
-  int x;
-  int treasure;
-  int draw;
-  int treasure1, treasure2;
-  int temp[MAX_HAND];
   struct gameState GAME, testGAME;
   int deck[10] = {copper, minion, mine, silver, gold, curse, council_room, smithy, tribute, adventurer};
   srand(time(NULL));
   int passed = 0;
   int failed = 0;
+  int flag;
 
   printf("====TESTING ADVENTURER(contains bug)====\n");
 
   int n;
-  for (n = 0; n < 2000; n++){
+  for (n = 0; n < 5000; n++){
     int numPlayers = (rand() % (4 - 2 + 1)) + 2;
     int randoSeed = (rand() % 1000) + 1;
-
     initializeGame(numPlayers, deck, randoSeed, &GAME);
     initializeGame(numPlayers, deck, randoSeed, &testGAME);
 
     int p;
     for (p = 0; p < numPlayers; p++){
+
+
+      //printf("PLAYER %d TURN\n", testGAME.whoseTurn);
+
+      int deckEmpty = rand() % 4;
+      if (deckEmpty == 0){
+/*
+          //printf("--->PLAYER %d 0 deck\n", testGAME.whoseTurn);
+
+        //printf("PLAYER %d 0 deck\n", testGAME.whoseTurn);
+        // discard 5 cards, draw 5 cards, deck should be 0 now
+        int d;
+        for (d = 0; d < 5; d++){
+          discardCard(d, GAME.whoseTurn, &testGAME, 0);
+          drawCard(GAME.whoseTurn, &testGAME);
+
+          discardCard(d, GAME.whoseTurn, &GAME, 0);
+          drawCard(GAME.whoseTurn, &GAME);
+        }
+*/
+        testGAME.deckCount[GAME.whoseTurn] = 0;
+        //printf("b4 deck GAME: %d TESTGAME: %d\n", GAME.deckCount[GAME.whoseTurn], testGAME.deckCount[GAME.whoseTurn]);
+        //printf("b4 hand GAME: %d TESTGAME: %d\n", GAME.handCount[GAME.whoseTurn], testGAME.handCount[GAME.whoseTurn]);
+      }
+
+
       adventurerInternal(&testGAME);
+      //printf("after hand GAME: %d TESTGAME: %d\n", GAME.handCount[GAME.whoseTurn], testGAME.handCount[GAME.whoseTurn]);
       if (GAME.handCount[GAME.whoseTurn]+1 == testGAME.handCount[GAME.whoseTurn]){
-        passed++;
+        flag = 1;
       }
       else{
-        printf("TEST FAILED. Something went Wrong.\n");
-        failed++;
+        flag = 0;
       }
       endTurn(&GAME);
       endTurn(&testGAME);
     }
+    if (flag)
+      passed++;
+    else
+      failed++;
   }
 
   printf("Tests passed: %d. Tests failed: %d\n", passed, failed);

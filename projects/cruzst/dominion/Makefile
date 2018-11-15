@@ -29,32 +29,38 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
-unittest1: unittest1.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c unittest1.c -o unittest1
+unittest1: unittest1.c dominion.o rngs.o
+	gcc -o unittest1 -g unittest1.c dominion.o  rngs.o $(CFLAGS)
 
-unittest2: unittest2.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c unittest2.c -o unittest2
+unittest2: unittest2.c dominion.o rngs.o
+	gcc -o unittest2 -g unittest2.c dominion.o rngs.o $(CFLAGS)
 
-unittest3: unittest3.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c unittest3.c -o unittest3
+unittest3: unittest3.c dominion.o rngs.o
+	gcc -o unittest3 -g unittest3.c dominion.o rngs.o $(CFLAGS)
 
-unittest4: unittest4.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c unittest4.c -o unittest4
+unittest4: unittest4.c dominion.o rngs.o
+	gcc -o unittest4 -g unittest4.c dominion.o rngs.o $(CFLAGS)
 
-cardtest1: cardtest1.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c cardtest1.c -o cardtest1
+cardtest1:  cardtest1.c dominion.o rngs.o
+	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
 
-cardtest2: cardtest1.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c cardtest2.c -o cardtest2
+cardtest2: cardtest2.c dominion.o rngs.o
+	gcc -o cardtest2 -g cardtest2.c dominion.o rngs.o $(CFLAGS)
 
-cardtest3: cardtest1.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c cardtest3.c -o cardtest3
+cardtest3: cardtest3.c dominion.o rngs.o
+	gcc -o cardtest3 -g cardtest3.c dominion.o rngs.o $(CFLAGS)
 
-cardtest4: cardtest1.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c cardtest4.c -o cardtest4
+cardtest4: cardtest4.c dominion.o rngs.o
+	gcc -o cardtest4 -g cardtest4.c dominion.o rngs.o $(CFLAGS)
 
-randomAdventure: randomtestadventure.c dominion.c rngs.c
-	gcc -g dominion.c -lm rngs.c randomtestadventure.c -o randomAdventureTest
+randomAdventure: randomtestadventure.c dominion.o rngs.o
+	gcc -o randomAdventureTest -g randomtestadventure.c dominion.o rngs.o $(CFLAGS)
+
+randomcard1: randomcardtest1.c dominion.o rngs.o
+	gcc -o randomCardTest1 -g randomcardtest1.c dominion.o rngs.o $(CFLAGS)
+
+randomcard2: randomcardtest2.c dominion.o rngs.o
+	gcc -o randomCardTest2 -g randomcardtest2.c dominion.o rngs.o $(CFLAGS)
 
 unittestresults: unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4
 	unittest1 &> unittestresults.out
@@ -71,13 +77,21 @@ unittestresults: unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 car
 
 randomTestAdventurerOutput: randomAdventure 
 	randomAdventureTest &> adventureresults.out
-	gcov dominion.c >> adventureresults.out
-	cat dominion.c.gcov >> adventureresults.out
+	gcov dominion.c -f >> adventureresults.out
+	#cat dominion.c.gcov >> adventureresults.out
+
+randomTestCard1Output: randomcard1
+	randomCardTest1 &> randomtestcard1.out
+	gcov dominion.c -f >> randomtestcard1.out
+
+randomTestCard2Output: randomcard2
+	randomCardTest2 &> randomtestcard2.out
+	gcov dominion.c -f >> randomtestcard2.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
-all: playdom player unittestresults randomTestAdventurerOutput
+all: playdom player unittestresults randomTestAdventurerOutput randomTestCard1Output randomTestCard2Output
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4 unittestresults.out randomAdventureTest
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4 unittestresults.out adventureresuts.out randomtestcard1.out randomtestcard2.out

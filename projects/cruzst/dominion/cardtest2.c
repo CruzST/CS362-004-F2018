@@ -49,11 +49,6 @@ int adventurerInternal(struct gameState *state){
 
 
 int main(){
-  int x;
-  int treasure;
-  int draw;
-  int treasure1, treasure2;
-  int temp[MAX_HAND];
   struct gameState GAME, testGAME;
   int deck[10] = {copper, minion, mine, silver, gold, curse, council_room, smithy, tribute, adventurer};
 
