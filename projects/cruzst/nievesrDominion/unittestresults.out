@@ -1,0 +1,79 @@
+
+UNIT TEST ONE: updateCoins
+Checking Player 1 coins. Should be 8 copper coins valued at 8 currency.
+Coin: 8
+TEST PASSED
+
+Checking Player 2 coins. Should be 8 copper coins valued at 8 currency.
+Coin: 8
+TEST PASSED
+
+Checking Player 3 coins. Should be 0 copper coins valued at 0 currency.
+Coin: 0
+TEST PASSED
+
+END UNIT TEST ONE
+
+UNIT TEST TWO: whoseTurn
+It is player 1's turn: >> TEST PASSED
+
+It is player 2's turn: >> TEST PASSED
+
+It is player 3's turn: >> TEST PASSED
+
+It is player 4's turn: >> TEST PASSED
+
+It is player 5's turn (should fail): >> TEST FAILED
+
+END UNIT TEST TWO
+
+UNIT TEST THREE: isGameOver
+Game is over due to Province cards stack empty: >> TEST PASSED
+Game is NOT over: >> TEST PASSED
+Game is over due to 3 card stacks empty: >> TEST PASSED
+END UNIT TEST THREE
+
+UNIT TEST FOUR: numHandCards
+Player 1 has 8 cards: >> TEST PASSED
+
+Player 2 has 7 cards: >> TEST PASSED
+
+Player 3 has 0 cards: >> TEST PASSED
+
+Player 4 has 10 cards: (should fail)>> TEST FAILED
+
+END UNIT TEST FOUR
+
+====TESTING SMITHY nieves R=====
+Testing handcount size
+Expected handCount: 7, smityInternal handCount: 9
+TEST FAILED
+====END TESTING SMITHY====
+
+====TESTING ADVENTURER(contains bug nievesR)====
+Testing handCount
+Expected handcCound: 7, adventurer handCount: 7
+TEST PASSED
+====END TESTING ADVENTURER====
+
+====TESTING COUNCIL_ROOMINTERNAL nievesR ====
+Checking current Players handCount (should pass)
+Expected handcount: 8 councilRoom handcount: 9
+TEST FAILED
+Checking other players handcount 
+TEST FAILED
+====END TESTING====
+
+====TESTING VILLAGEINTERNAL nievesR ====
+Checking handcount
+Expected handCount: 5, villageInternal handcount: 5
+TEST PASSED
+Checking numActions
+Expected actions: 2, villageInternal actions: 4
+TEST FAILED
+====END TEST====
+
+File 'dominion.c'
+Lines executed:48.14% of 565
+Creating 'dominion.c.gcov'
+
